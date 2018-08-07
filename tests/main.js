@@ -5,11 +5,13 @@ import alias from "../src/helpers/alias";
 import bind from "../src/helpers/bind";
 import resolve from "../src/helpers/resolve";
 import singleton from "../src/helpers/singleton";
+import BarService from "./BarService";
 import FooModel from "./FooModel";
 import FooService from "./FooService";
 
 describe('Container', function() {
     before(function() {
+        bind("bar", BarService);
         bind("foo-bind", FooService);
 
         singleton("foo-singleton", FooService);
@@ -100,6 +102,22 @@ describe('Container', function() {
         it("should return 'null' when a concrete doesn't exist for an alias", function() {
             const service = resolve("not-found-alias");
             should(service).be.null();
+        });
+
+        it("should return initialized concrete with required params", function() {
+            const service = resolve("bar", 1);
+
+            service.should.have.property("foo").which.is.a.Function();
+            service.should.have.property("required").which.is.equal(1);
+            service.should.have.property("optional").which.is.undefined();
+        });
+
+        it("should return initialized concrete with all params", function() {
+            const service = resolve("bar", 1, 2);
+
+            service.should.have.property("foo").which.is.a.Function();
+            service.should.have.property("required").which.is.equal(1);
+            service.should.have.property("optional").which.is.equal(2);
         });
     });
 

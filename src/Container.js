@@ -1,6 +1,11 @@
 import _ from "underscore";
 import Backbone from "backbone";
 
+/**
+ * @public
+ * @since 1.0.0
+ * @mixes Backbone.Events
+ */
 class Container {
     constructor() {
         this.bindings = {};
@@ -13,7 +18,7 @@ class Container {
 
     /**
      * @public
-     * @since
+     * @since 1.0.0
      * @param {string} abstract
      * @param {function|Object} concrete
      * @param {boolean} [shared=false]
@@ -34,7 +39,7 @@ class Container {
 
     /**
      * @public
-     * @since
+     * @since 1.0.0
      * @param {string} abstract
      * @param {function|Object} concrete
      */
@@ -44,7 +49,7 @@ class Container {
 
     /**
      * @public
-     * @since
+     * @since 1.0.0
      * @param {string} abstract
      * @param {string} alias
      */
@@ -56,8 +61,9 @@ class Container {
 
     /**
      * @public
-     * @since
-     * @param abstract
+     * @since 1.0.0
+     * @param {string} abstract
+     * @param {...} [*args]
      */
     resolve(abstract) {
         let binding = this.binding(abstract);
@@ -72,14 +78,20 @@ class Container {
             }
 
             if (!instance) {
-                instance = _.isFunction(binding.concrete) ? new binding.concrete : binding.concrete;
+                const concrete = binding.concrete;
+
+                if (_.isFunction(concrete)) {
+                    instance = new (Function.prototype.bind.apply(concrete, arguments));
+                } else {
+                    instance = concrete;
+                }
 
                 if (binding.shared === true) {
                     this.resolved[abstract] = instance;
                 }
 
-                this.trigger("resolved", abstract, instance, binding.concrete);
-                this.trigger("resolved." + abstract, instance, binding.concrete);
+                this.trigger("resolved", abstract, instance, concrete);
+                this.trigger("resolved." + abstract, instance, concrete);
             }
         }
 
@@ -88,7 +100,7 @@ class Container {
 
     /**
      * @public
-     * @since
+     * @since 1.0.0
      * @alias resolve
      */
     make() {
@@ -97,6 +109,7 @@ class Container {
 
     /**
      * @private
+     * @since 1.0.0
      * @param {string} abstract
      * @return {Array}
      */
