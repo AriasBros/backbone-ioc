@@ -1,4 +1,6 @@
-require('should');
+import unbind from "../src/helpers/unbind";
+
+const should = require('should');
 
 import container from "../src/Container";
 import alias from "../src/helpers/alias";
@@ -61,6 +63,24 @@ describe('Container', function() {
             service.should.be.equal(service_1);
             service.should.be.equal(service_2);
             service_1.should.be.equal(service_2);
+        });
+    });
+
+    describe('.unbind()', function() {
+        it('should unregister an abstract, deleting bindings, resolved instances and aliases', function() {
+            singleton("go-unbind", FooService);
+            alias("go-unbind", "alias-unbind");
+
+            let service = resolve("go-unbind");
+            service.should.have.property("bar").which.is.a.Function();
+
+            service = resolve("alias-unbind");
+            service.should.have.property("bar").which.is.a.Function();
+
+            unbind("go-unbind");
+
+            should.not.exists(resolve("go-unbind"));
+            should.not.exists(resolve("alias-unbind"));
         });
     });
 

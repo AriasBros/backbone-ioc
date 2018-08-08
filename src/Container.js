@@ -13,7 +13,9 @@ class Container {
         this.aliases = {};
 
         Object.assign(this, Backbone.Events);
+
         delete this.bind;
+        delete this.unbind;
     }
 
     /**
@@ -35,6 +37,22 @@ class Container {
 
         this.trigger("bind", abstract, concrete, shared);
         this.trigger("bind." + abstract, concrete, shared);
+    }
+
+    /**
+     * @public
+     * @since 1.0.0
+     * @param {string} abstract
+     */
+    unbind(abstract) {
+        delete this.bindings[abstract];
+        delete this.resolved[abstract];
+
+        _.each(this.aliases, (abs, alias) => {
+            if (abs === abstract) {
+                delete this.aliases[alias];
+            }
+        });
     }
 
     /**
