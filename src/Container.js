@@ -64,6 +64,20 @@ class Container {
      * @since 1.0.0
      * @param {string} abstract
      * @param {...} [*args]
+     * @return {Function}
+     */
+    inject(abstract) {
+        return () => {
+            return this.resolve(abstract);
+        };
+    }
+
+    /**
+     * @public
+     * @since 1.0.0
+     * @param {string} abstract
+     * @param {...} [*args]
+     * @return {Object}
      */
     resolve(abstract) {
         let binding = this.binding(abstract);

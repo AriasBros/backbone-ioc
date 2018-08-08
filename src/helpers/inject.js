@@ -1,14 +1,12 @@
-import _ from "underscore";
 import container from "../Container";
 
 /**
  * @public
- * @since
+ * @since 1.0.0
  * @param {string} abstract
- * @returns {function}
+ * @param {...} [*args]
+ * @return {Function}
  */
 export default function inject(abstract) {
-    return _.once(function() {
-        return container.resolve(abstract);
-    });
+    return container.inject(abstract);
 }
