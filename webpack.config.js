@@ -1,6 +1,9 @@
+const path = require("path");
+
 module.exports = {
     mode: "production",
-    entry: "./src",
+    context: path.resolve(__dirname, 'src'),
+    entry: "./index.js",
     output: {
         filename: "backbone-ioc.min.js"
     },
