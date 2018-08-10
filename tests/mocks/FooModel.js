@@ -1,6 +1,6 @@
 import Backbone from "backbone";
-import inject from "../src/helpers/inject";
-import resolve from "../src/helpers/resolve";
+import inject from "../../src/helpers/inject";
+import resolve from "../../src/helpers/resolve";
 
 const FooModel = Backbone.Model.extend({
     serviceInjected: inject("foo"),
