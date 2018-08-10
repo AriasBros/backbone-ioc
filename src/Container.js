@@ -163,7 +163,5 @@ class Container {
     }
 }
 
-const container = new Container;
-
-export default container;
+export default new Container;
 export { Container };
