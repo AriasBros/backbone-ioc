@@ -1,10 +1,9 @@
-import unbind from "../src/helpers/unbind";
-
 const should = require('should');
 
 import container from "../src/Container";
 import alias from "../src/helpers/alias";
 import bind from "../src/helpers/bind";
+import unbind from "../src/helpers/unbind";
 import resolve from "../src/helpers/resolve";
 import singleton from "../src/helpers/singleton";
 import BarService from "./mocks/BarService";
